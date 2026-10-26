@@ -1,0 +1,98 @@
+[
+  {
+    "id": "bccfu-turnaround-iatse",
+    "agreement": "BCCFU",
+    "union": "IATSE Local 891",
+    "clause": "BCCFU Article A1.20(a)",
+    "topic": "Rest Period & Turnaround",
+    "content": "BCCFU Master Agreement Article A1.20(a) - Turnaround: The minimum rest period (turnaround) between the end of one shift and the call time for the next shift for IATSE Local 891 technicians (including Dolly Operator, Head Lighting Technician, Assistant Costume Designer, Boom Operator) shall be ten (10.0) consecutive hours. If the rest period is encroached (less than 10.0 hours), turnaround encroachment penalties apply for all hours encroached at double the regular hourly scale rate."
+  },
+  {
+    "id": "bccfu-turnaround-teamsters",
+    "agreement": "BCCFU",
+    "union": "Teamsters Local Union No. 155",
+    "clause": "BCCFU Article B3.01(a)",
+    "topic": "Rest Period & Turnaround",
+    "content": "BCCFU Master Agreement Article B3.01(a) - Turnaround: The minimum rest period between shifts for Teamsters Local Union No. 155 members (including Driver Captain, Special Equipment Driver, Transportation Coordinator) shall be eight (8.0) consecutive hours off duty. Turnaround encroachment penalties apply if the rest interval between dismissal and subsequent call is less than 8.0 hours."
+  },
+  {
+    "id": "bccfu-meals",
+    "agreement": "BCCFU",
+    "union": "IATSE Local 891 / Teamsters 155",
+    "clause": "BCCFU Article 6.01/6.04",
+    "topic": "Meal Periods & Meal Penalty",
+    "content": "BCCFU Master Agreement Article 6.01 and Article 6.04 - Meal Periods: The first meal period of not less than one-half (1/2) hour or not more than one (1) hour shall be provided no later than six (6.0) hours after the employee's call time. If an employee is required to work beyond the six-hour mark without a meal break, a Delayed Meal Penalty accrues for all elapsed time until the meal is called. Meal penalty is payable in addition to all other compensation."
+  },
+  {
+    "id": "bccfu-overtime",
+    "agreement": "BCCFU",
+    "union": "IATSE Local 891 / Teamsters 155",
+    "clause": "BCCFU Article 4.06",
+    "topic": "Extended Workday & Overtime",
+    "content": "BCCFU Master Agreement Article 4.06 - Extended Workday / Excessive Hours: A standard shift consists of eight (8) hours. Hours worked in excess of 8 and up to 12 hours are paid at time-and-a-half (1.5x). Hours worked between 12 and 15 hours are paid at double time (2.0x). Work performed in excess of fifteen (15.0) consecutive hours in a single workday constitutes an Extended Workday (>15 Hours), requiring premium compensation of 2.5x to 3.0x the base scale wage rate and production company authorization due to fatigue risk."
+  },
+  {
+    "id": "dgc-turnaround",
+    "agreement": "DGC",
+    "union": "DGC BC (Directors Guild of Canada)",
+    "clause": "DGC BC Article 17.1",
+    "topic": "Rest Period & Turnaround",
+    "content": "DGC BC Collective Agreement Article 17.1 - Rest Intervals: For Guild members including Third Assistant Director, Assistant Location Manager, Second Assistant Director, and Location Manager, the minimum turnaround rest interval between wrap and call time the next day shall be nine (9.0) consecutive hours. Failure to provide 9.0 consecutive hours of rest incurs turnaround encroachment penalties."
+  },
+  {
+    "id": "dgc-meals",
+    "agreement": "DGC",
+    "union": "DGC BC (Directors Guild of Canada)",
+    "clause": "DGC BC Article 16.2",
+    "topic": "Meal Breaks",
+    "content": "DGC BC Collective Agreement Article 16.2 - Meal Penalties: The first meal must be served within six (6.0) hours of the member's call time. Working past 6.0 hours without a meal break triggers a Delayed Meal Penalty calculated from the 6.0h mark until the meal actually begins."
+  },
+  {
+    "id": "dgc-overtime",
+    "agreement": "DGC",
+    "union": "DGC BC (Directors Guild of Canada)",
+    "clause": "DGC BC Article 15.5",
+    "topic": "Overtime & Extended Workday",
+    "content": "DGC BC Collective Agreement Article 15.5 - Work in Excess of 15 Hours: Shifts extending beyond fifteen (15.0) hours are strictly governed as Extended Workdays. Work past 15 consecutive hours incurs 2.5x to 3.0x hourly premium pay and requires special safety supervision and transportation assistance to prevent driver fatigue."
+  },
+  {
+    "id": "ubcp-turnaround",
+    "agreement": "UBCP",
+    "union": "UBCP/ACTRA",
+    "clause": "UBCP BCMPA Article A1301",
+    "topic": "Performer Rest Period & Turnaround",
+    "content": "UBCP/ACTRA BCMPA (BC Master Production Agreement) Article A1301 - Rest Periods: For Performers (including Principal Actor, Stunt Performer, Background Performer), the mandatory rest period between dismissal and call time on the following day shall not be less than eleven (11.0) consecutive hours. Turnaround encroachment penalties apply if the rest period is under 11.0 hours."
+  },
+  {
+    "id": "ubcp-meals",
+    "agreement": "UBCP",
+    "union": "UBCP/ACTRA",
+    "clause": "UBCP BCMPA Article A1401",
+    "topic": "Performer Meal Periods",
+    "content": "UBCP/ACTRA BCMPA Article A1401 - Meal Breaks & Meal Penalty: The producer shall provide a meal period not earlier than 2 hours and not later than six (6.0) hours following the performer's scheduled call time. If a performer works past 6.0 hours without a meal, a Delayed Meal Penalty applies for all elapsed delay time."
+  },
+  {
+    "id": "ubcp-overtime",
+    "agreement": "UBCP",
+    "union": "UBCP/ACTRA",
+    "clause": "UBCP BCMPA Article A1201",
+    "topic": "Excessive Performer Hours & Double Time",
+    "content": "UBCP/ACTRA BCMPA Article A1201 - Overtime and Workday Maximum: For Principal Actors and Stunt Performers, hours worked in excess of eight (8) hours are overtime. Hours worked past twelve (12.0) hours in a single workday constitute Excessive Performer Hours, compensable at double time (2.0x contracted hourly rate) per Article A1201."
+  },
+  {
+    "id": "bc-esa-rest",
+    "agreement": "Statutory",
+    "union": "BC Employment Standards",
+    "clause": "BC Employment Standards Act Part 4",
+    "topic": "Statutory Minimum Daily and Weekly Rest",
+    "content": "British Columbia Employment Standards Act (ESA) Part 4 - Hours of Work: An employer must ensure that employees receive at least 8 consecutive hours free from work between each shift, and at least 32 consecutive hours free from work each week. Collective agreements in the film industry supersede the ESA only where they meet or exceed statutory minimum protections."
+  },
+  {
+    "id": "worksafebc-fatigue",
+    "agreement": "Safety",
+    "union": "WorkSafeBC / Actsafe",
+    "clause": "WorkSafeBC OHS Guidelines / Actsafe Film Safety",
+    "topic": "Fatigue Management & Long Shifts",
+    "content": "WorkSafeBC Occupational Health and Safety & Actsafe BC Motion Picture Safety Guidelines: Shifts extending over 14 hours pose severe fatigue risks during commutes. Employers must provide rest areas, taxi vouchers, or hotel accommodations to cast and crew if safe driving is impaired. Turnaround violations directly exacerbate occupational health hazards on BC film sets."
+  }
+]

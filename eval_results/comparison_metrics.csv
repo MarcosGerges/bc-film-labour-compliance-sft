@@ -1,0 +1,6 @@
+Configuration,JSON_Validity_Rate_Pct,Agreement_Accuracy_Pct,Compliance_Accuracy_Pct,Violation_F1_Pct,Clause_Citation_Accuracy_Pct,Avg_Latency_Sec
+"Base Model (Zero-Shot)",0.0,0.0,0.0,0.0,0.0,18.463
+"Base Model + RAG",0.0,0.0,0.0,0.0,0.0,22.814
+"Open-Source Alt (SmolLM2-360M)",0.0,0.0,0.0,0.0,0.0,16.288
+"Fine-Tuned Model (SFT LoRA)",75.0,75.0,75.0,42.11,30.77,17.209
+"Fine-Tuned Model + RAG",50.0,50.0,50.0,23.53,0.0,21.889

@@ -1,0 +1,57 @@
+{
+  "Base Model (Zero-Shot)": {
+    "total_samples": 8,
+    "json_validity_rate": 0.0,
+    "agreement_accuracy": 0.0,
+    "compliance_accuracy": 0.0,
+    "violation_precision": 0.0,
+    "violation_recall": 0.0,
+    "violation_f1": 0.0,
+    "clause_citation_accuracy": 0.0,
+    "avg_latency_sec": 18.463
+  },
+  "Base Model + RAG": {
+    "total_samples": 8,
+    "json_validity_rate": 0.0,
+    "agreement_accuracy": 0.0,
+    "compliance_accuracy": 0.0,
+    "violation_precision": 0.0,
+    "violation_recall": 0.0,
+    "violation_f1": 0.0,
+    "clause_citation_accuracy": 0.0,
+    "avg_latency_sec": 22.814
+  },
+  "Open-Source Alt (SmolLM2-360M)": {
+    "total_samples": 8,
+    "json_validity_rate": 0.0,
+    "agreement_accuracy": 0.0,
+    "compliance_accuracy": 0.0,
+    "violation_precision": 0.0,
+    "violation_recall": 0.0,
+    "violation_f1": 0.0,
+    "clause_citation_accuracy": 0.0,
+    "avg_latency_sec": 16.288
+  },
+  "Fine-Tuned Model (SFT LoRA)": {
+    "total_samples": 8,
+    "json_validity_rate": 75.0,
+    "agreement_accuracy": 75.0,
+    "compliance_accuracy": 75.0,
+    "violation_precision": 66.67,
+    "violation_recall": 30.77,
+    "violation_f1": 42.11,
+    "clause_citation_accuracy": 30.77,
+    "avg_latency_sec": 17.209
+  },
+  "Fine-Tuned Model + RAG": {
+    "total_samples": 8,
+    "json_validity_rate": 50.0,
+    "agreement_accuracy": 50.0,
+    "compliance_accuracy": 50.0,
+    "violation_precision": 50.0,
+    "violation_recall": 15.38,
+    "violation_f1": 23.53,
+    "clause_citation_accuracy": 0.0,
+    "avg_latency_sec": 21.889
+  }
+}

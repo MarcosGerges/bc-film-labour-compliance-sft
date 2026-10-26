@@ -1,0 +1,24 @@
+# Python environment & cache
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# macOS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Checkpoints / temp files
+*.log
+scratch/
+checkpoints/
+models/**/checkpoints/
+
+# IDE configs
+.idea/
+.vscode/
