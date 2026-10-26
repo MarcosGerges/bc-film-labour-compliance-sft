@@ -20,11 +20,15 @@ class LocalSentenceTransformerEF:
         embeddings = self.model.encode(input, convert_to_numpy=True, batch_size=64, show_progress_bar=False)
         return embeddings.tolist()
         
-    def embed_query(self, query):
-        return self([query])[0]
+    def embed_query(self, *args, **kwargs):
+        inp = kwargs.get("input", args[0] if args else [])
+        if isinstance(inp, str):
+            inp = [inp]
+        return self(inp)
         
-    def embed_documents(self, docs):
-        return self(docs)
+    def embed_documents(self, *args, **kwargs):
+        inp = kwargs.get("input", args[0] if args else [])
+        return self(inp)
 
 def build_vector_store():
     """Index BC film labour agreements into a local Chroma vector database."""
@@ -84,8 +88,21 @@ def build_vector_store():
         print(f"Saved fallback knowledge base to {backup_path}")
         return None, None
 
-def query_knowledge_base(query_text: str, n_results: int = 3):
-    """Retrieve top relevant clauses given a shift description or timecard query."""
+def query_knowledge_base(query_text: str, n_results: int = 3, distance_threshold: float = 0.65):
+    """
+    Retrieve top relevant clauses given a shift description or timecard query.
+    
+    =============================================================================
+    COSINE DISTANCE GUARDRAIL:
+    ChromaDB collection uses {"hnsw:space": "cosine"}, where:
+        Cosine Distance = 1.0 - Cosine Similarity
+    
+    A strict threshold guardrail (`distance_threshold`, default 0.65) filters out
+    retrieved chunks whose distance exceeds 0.65 (similarity < 0.35).
+    This ensures that irrelevant or out-of-domain queries do NOT pollute the LLM
+    context with ungrounded legal clauses.
+    =============================================================================
+    """
     try:
         import chromadb
         ef = LocalSentenceTransformerEF()
@@ -94,10 +111,20 @@ def query_knowledge_base(query_text: str, n_results: int = 3):
             name="bc_film_labour_agreements",
             embedding_function=ef
         )
-        results = collection.query(query_texts=[query_text], n_results=n_results)
+        results = collection.query(
+            query_texts=[query_text],
+            n_results=n_results,
+            include=["documents", "metadatas", "distances"]
+        )
         retrieved_docs = []
         if results and "documents" in results and results["documents"]:
             for i, doc_text in enumerate(results["documents"][0]):
+                dist = results["distances"][0][i]
+                
+                # --- COSINE DISTANCE GUARDRAIL FILTER ---
+                if distance_threshold is not None and dist > distance_threshold:
+                    continue  # Exclude out-of-distribution / low-relevance match
+                    
                 meta = results["metadatas"][0][i]
                 retrieved_docs.append({
                     "content": doc_text,
@@ -105,11 +132,13 @@ def query_knowledge_base(query_text: str, n_results: int = 3):
                     "agreement": meta.get("agreement", ""),
                     "union": meta.get("union", ""),
                     "document": meta.get("document", ""),
-                    "page": meta.get("page", 1)
+                    "page": meta.get("page", 1),
+                    "distance": round(float(dist), 4),
+                    "similarity": round(1.0 - float(dist), 4)
                 })
         return retrieved_docs
     except Exception as e:
-        # Fallback keyword matching
+        # Fallback keyword matching with lexical guardrail
         docs = extract_pdf_text()
         scores = []
         q_lower = query_text.lower()
@@ -122,7 +151,8 @@ def query_knowledge_base(query_text: str, n_results: int = 3):
             for word in doc.get("content", "").lower().split():
                 if len(word) > 3 and word in q_lower:
                     score += 1
-            scores.append((score, doc))
+            if score >= 3:  # Fallback relevance guardrail
+                scores.append((score, doc))
         scores.sort(key=lambda x: x[0], reverse=True)
         return [item[1] for item in scores[:n_results]]
 
@@ -134,13 +164,16 @@ if __name__ == "__main__":
         "Principal Actor under UBCP rest period 8.2h turnaround",
         "IATSE Local 891 Dolly Operator meal penalty first meal 7.2 hours",
         "Directors Guild of Canada Third Assistant Director 16 hour workday",
-        "BC Employment Standards Act minimum consecutive hours free from work"
+        "What is the best recipe for baking chocolate cookies?"  # Irrelevant query (should be filtered)
     ]
     
-    print("\n--- Testing ChromaDB Retrieval across Data/ Documents ---")
+    print("\n--- Testing ChromaDB Retrieval & Cosine Distance Guardrail ---")
     for q in test_queries:
-        res = query_knowledge_base(q, n_results=2)
+        res = query_knowledge_base(q, n_results=2, distance_threshold=0.65)
         print(f"\nQuery: '{q}'")
+        if not res:
+            print("  [GUARDRAIL TRIGGERED] No documents passed distance threshold <= 0.65 (Query rejected as irrelevant)")
         for idx, r in enumerate(res):
-            print(f"  [{idx+1}] Document: {r.get('document')} (Page {r.get('page')}) | Clause: {r.get('clause')}")
+            print(f"  [{idx+1}] Dist: {r.get('distance')} (Sim: {r.get('similarity')}) | Clause: {r.get('clause')}")
+            print(f"      Document: {r.get('document')} (Page {r.get('page')})")
             print(f"      Excerpt: {r.get('content')[:140]}...")
