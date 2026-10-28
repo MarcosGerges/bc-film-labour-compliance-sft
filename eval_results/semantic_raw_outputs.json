@@ -1,0 +1,415 @@
+{
+  "Base Model (Zero-Shot)": [
+    {
+      "sample_idx": 0,
+      "prompt": "Please audit the following film crew timecard:\nRole: Head Lighting Technician under BCCFU\nScale wage: $51.41/hr\nShift duration: 15.1h\nFirst meal break: 7.0h mark\nRest period: 5.3h",
+      "raw_response": "```json\n{\n  \"timecard\": {\n    \"head_lighting_technician\": [\n      {\n        \"role\": \"Head Lighting Technician\",\n        \"scale_wage\": \"$51.41/hr\",\n        \"shift_duration\": 15.1,\n        \"first_meal_break\": 7.0,\n        \"rest_period\": 5.3\n      }\n    ]\n  },\n  \"audit_results\": {\n    \"total_hours_worked\": 22.4,\n    \"total_time_spent_on_shifts\": 18.6,\n    \"meal_breaks\": 2,\n    \"rest_periods\": 2,\n    \"total_hours_in_rest_period\": 5.3,\n   ",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.3333333333333333,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 23.787707805633545
+    },
+    {
+      "sample_idx": 1,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Dolly Operator\n- Rate: $45.98/hr\n- Total Elapsed Work Time: 14.8h\n- First Meal Given: 6.4h after call\n- Rest Period Between Shifts: 10.9h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"shift\": {\n    \"date\": \"2023-07-01\",\n    \"time\": \"14:00\",\n    \"duration\": \"14.8 hours\"\n  },\n  \"crew\": [\n    {\n      \"name\": \"John Doe\",\n      \"role\": \"Dolly Operator\",\n      \"rate\": \"$45.98/hour\",\n      \"total_hours_worked\": 14.8,\n      \"first_meal_given\": 6.4,\n      \"rest_period_between_shifts\": 10.9\n    }\n  ],\n  \"audit_notes\": [\n    {\n      \"date\": \"2023-07-",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 1.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 23.799014806747437
+    },
+    {
+      "sample_idx": 2,
+      "prompt": "Can you check if there are any contractual violations for this shift?\nWorker: Boom Operator (IATSE Local 891)\nHourly base: $53.56\nTotal hours logged: 15.4 hours\nMeal break called: 7.6 hours after call time\nTurnaround given: 11.8 hours before next call",
+      "raw_response": "```json\n{\n  \"violations\": [\n    {\n      \"contractual violation\": \"Meal break called\",\n      \"description\": \"The worker was called for meal breaks, which is not allowed under the IATSE Local 891 contract.\"\n    },\n    {\n      \"contractual violation\": \"Turnaround given\",\n      \"description\": \"The worker was given a turnaround of 11.8 hours before their next call, which is more than the standard 7.6 hours provided by the contract.\"\n    }\n  ]\n}\n```",
+      "is_valid_json": false,
+      "parsed_pred": {
+        "violations": [
+          {
+            "contractual violation": "Meal break called",
+            "description": "The worker was called for meal breaks, which is not allowed under the IATSE Local 891 contract."
+          },
+          {
+            "contractual violation": "Turnaround given",
+            "description": "The worker was given a turnaround of 11.8 hours before their next call, which is more than the standard 7.6 hours provided by the contract."
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.5,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 18.281894207000732
+    },
+    {
+      "sample_idx": 3,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Assistant Costume Designer\n- Rate: $50.15/hr\n- Total Elapsed Work Time: 11.6h\n- First Meal Given: 6.9h after call\n- Rest Period Between Shifts: 8.6h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"audit_date\": \"2023-04-01\",\n  \"shift_number\": \"11.6h\",\n  \"costume_designer_name\": \"John Doe\",\n  \"rate_per_hour\": \"$50.15\",\n  \"total_hours_worked\": 11.6,\n  \"first_meal_given\": \"6.9h after call\",\n  \"rest_period_between_shifts\": \"8.6h\"\n}\n```",
+      "is_valid_json": false,
+      "parsed_pred": {
+        "audit_date": "2023-04-01",
+        "shift_number": "11.6h",
+        "costume_designer_name": "John Doe",
+        "rate_per_hour": "$50.15",
+        "total_hours_worked": 11.6,
+        "first_meal_given": "6.9h after call",
+        "rest_period_between_shifts": "8.6h"
+      },
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.5,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 16.28039813041687
+    }
+  ],
+  "Base Model + RAG": [
+    {
+      "sample_idx": 0,
+      "prompt": "Please audit the following film crew timecard:\nRole: Head Lighting Technician under BCCFU\nScale wage: $51.41/hr\nShift duration: 15.1h\nFirst meal break: 7.0h mark\nRest period: 5.3h",
+      "raw_response": "```json\n{\n  \"timecard\": {\n    \"role\": \"Head Lighting Technician\",\n    \"scale_wage\": \"$51.41/hr\",\n    \"shift_duration\": 15.1,\n    \"first_meal_break\": 7.0,\n    \"rest_period\": 5.3,\n    \"total_hours_worked\": 15.1 + 7.0 + 5.3 = 27.4 hours\n  },\n  \"bc_collective_agreement_clauses\": [\n    {\n      \"clause_number\": 189,\n      \"name_of_clause\": \"mum work period without meal break (C7.02)\",\n      \"pay_rate\": 90",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.3333333333333333,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": true
+      },
+      "latency": 27.97037124633789
+    },
+    {
+      "sample_idx": 1,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Dolly Operator\n- Rate: $45.98/hr\n- Total Elapsed Work Time: 14.8h\n- First Meal Given: 6.4h after call\n- Rest Period Between Shifts: 10.9h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"shift_report\": {\n    \"date\": \"2023-07-01\",\n    \"time_period\": \"Shift 1\",\n    \"total_hours_worked\": 14.8,\n    \"first_meal_given\": 6.4,\n    \"rest_period_between_shifts\": 10.9,\n    \"meal_break_duration\": 120 / 12,\n    \"meal_break_rate\": 45.98 * 12 / 12,\n    \"performer_pay_rate\": 45.98,\n    \"meal_break_penalty\": 10.9 * 45.98 / 12,\n    \"",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": true,
+        "concept_recall": 1.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 25.332221031188965
+    },
+    {
+      "sample_idx": 2,
+      "prompt": "Can you check if there are any contractual violations for this shift?\nWorker: Boom Operator (IATSE Local 891)\nHourly base: $53.56\nTotal hours logged: 15.4 hours\nMeal break called: 7.6 hours after call time\nTurnaround given: 11.8 hours before next call",
+      "raw_response": "```json\n{\n  \"contractual_violations\": [\n    {\n      \"violated_clause\": \"meal_break\",\n      \"violation_details\": \"The shift report indicates that the employee received a meal break of 7.6 hours after their call time. This falls under clause 25 of the BCCFU agreement, which states '25 IATSE Local 891, meal break (A1.19).'\"\n    },\n    {\n      \"violated_clause\": \"turnaround\",\n      \"violation_details\": \"The shift report shows that the employee received a turnaround of 11.8 hours before their next call. This violation aligns with clause 53 of the BCC",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.5,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 29.00982093811035
+    },
+    {
+      "sample_idx": 3,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Assistant Costume Designer\n- Rate: $50.15/hr\n- Total Elapsed Work Time: 11.6h\n- First Meal Given: 6.9h after call\n- Rest Period Between Shifts: 8.6h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"audit_date\": \"2023-09-01\",\n  \"audit_type\": \"Costume Designer\",\n  \"role\": \"Assistant Costume Designer\",\n  \"rate\": \"$50.15/hr\",\n  \"total_elapsed_work_time\": 11.6,\n  \"first_meal_given\": 6.9,\n  \"rest_period_between_shifts\": 8.6,\n  \"costumes_used\": [\n    {\n      \"costume_name\": \"Red Suit\",\n      \"quantity\": 10,\n      \"price_per_unit\": \"$100\"\n    },\n    {\n      \"costume_name\": \"Blue Suit\",\n      \"quantity\": 5,\n",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.5,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 29.61099100112915
+    }
+  ],
+  "SmolLM2-360M-Instruct": [
+    {
+      "sample_idx": 0,
+      "prompt": "Please audit the following film crew timecard:\nRole: Head Lighting Technician under BCCFU\nScale wage: $51.41/hr\nShift duration: 15.1h\nFirst meal break: 7.0h mark\nRest period: 5.3h",
+      "raw_response": "The timecard provided does not match the information provided in the BC Collective Agreement. The timecard indicates that the Head Lighting Technician is under the BCCFU, but the agreement states that the Head Lighting Technician is under the BC Film & Television Labor Committee.\n\nThe timecard also does not match the information provided in the BC Collective Agreement. The timecard indicates that the Head Lighting Technician is under the BCCFU, but the agreement states that the Head Lighting Technician is under the BC Film & Television Labor Committee.\n\nThe timecard also does not match the information provided in the BC Collective Agreement. The timecard indicates that the Head Lighting Technician is under the BCCFU, but the agreement states",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 19.66393804550171
+    },
+    {
+      "sample_idx": 1,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Dolly Operator\n- Rate: $45.98/hr\n- Total Elapsed Work Time: 14.8h\n- First Meal Given: 6.4h after call\n- Rest Period Between Shifts: 10.9h\nPlease audit this shift.",
+      "raw_response": "I've reviewed the timesheets and shift reports for the Dolly Operator shift. Here's the audit:\n\n**Shift Report:**\n\n- 06:00:00 - 06:00:30: Dolly Operator\n- 06:00:30 - 06:01:00: First Meal Given\n- 06:01:00 - 06:01:30: Rest Period\n- 06:01:30 - 06:02:00: Dolly Operator\n- 06:02:00 - 06:02:3",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 1.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 18.86772394180298
+    },
+    {
+      "sample_idx": 2,
+      "prompt": "Can you check if there are any contractual violations for this shift?\nWorker: Boom Operator (IATSE Local 891)\nHourly base: $53.56\nTotal hours logged: 15.4 hours\nMeal break called: 7.6 hours after call time\nTurnaround given: 11.8 hours before next call",
+      "raw_response": "Yes, there are some contractual violations for this shift. The worker is entitled to a minimum of 15.4 hours of overtime per week, which is 1.5 hours more than the standard 14.4 hours per week. Additionally, the worker is entitled to a minimum of 7.6 hours of meal breaks per week, which is 1.6 hours more than the standard 7.2 hours per week. The worker is also entitled to a minimum of 11.8 hours of turnaround time per week, which is 1.8 hours more than the standard 11.2 hours per week.",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": true,
+        "concept_recall": 1.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 17.258830070495605
+    },
+    {
+      "sample_idx": 3,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Assistant Costume Designer\n- Rate: $50.15/hr\n- Total Elapsed Work Time: 11.6h\n- First Meal Given: 6.9h after call\n- Rest Period Between Shifts: 8.6h\nPlease audit this shift.",
+      "raw_response": "I've reviewed the timesheets and shift reports for the given shift. Here's the audit:\n\nShift Report:\n- 06:00 - 06:30: 0.0h\n- 06:30 - 06:45: 0.0h\n- 06:45 - 07:00: 0.0h\n- 07:00 - 07:30: 0.0h\n- 07:30 - 07:45: 0.0h\n- 07:45 - 08:00: 0.0h",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": false,
+        "compliance_judgment_correct": false,
+        "concept_recall": 0.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 18.933871269226074
+    }
+  ],
+  "Fine-Tuned Model (LoRA)": [
+    {
+      "sample_idx": 0,
+      "prompt": "Please audit the following film crew timecard:\nRole: Head Lighting Technician under BCCFU\nScale wage: $51.41/hr\nShift duration: 15.1h\nFirst meal break: 7.0h mark\nRest period: 5.3h",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Head Lighting Technician\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Delayed Meal Penalty\",\n      \"clause\": \"BCCFU Article 6.01/6.04\",\n      \"description\": \"First meal was provided at 7.0h after call, exceeding the mandatory 6-hour window.\",\n      \"hours_affected\": 1.0\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Head Lighting Technician",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Delayed Meal Penalty",
+            "clause": "BCCFU Article 6.01/6.04",
+            "description": "First meal was provided at 7.0h after call, exceeding the mandatory 6-hour window.",
+            "hours_affected": 1.0
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.3333333333333333,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 16.930498838424683
+    },
+    {
+      "sample_idx": 1,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Dolly Operator\n- Rate: $45.98/hr\n- Total Elapsed Work Time: 14.8h\n- First Meal Given: 6.4h after call\n- Rest Period Between Shifts: 10.9h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Dolly Operator\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Turnaround Encroachment\",\n      \"clause\": \"BCCFU Article A1.20(a)\",\n      \"description\": \"Rest period of 10.9h fails to meet mandatory minimum of 13.0h. Encroached by 2.1 hours.\",\n      \"hours_affected\": 2.1\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Dolly Operator",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Turnaround Encroachment",
+            "clause": "BCCFU Article A1.20(a)",
+            "description": "Rest period of 10.9h fails to meet mandatory minimum of 13.0h. Encroached by 2.1 hours.",
+            "hours_affected": 2.1
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.0,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 18.634998083114624
+    },
+    {
+      "sample_idx": 2,
+      "prompt": "Can you check if there are any contractual violations for this shift?\nWorker: Boom Operator (IATSE Local 891)\nHourly base: $53.56\nTotal hours logged: 15.4 hours\nMeal break called: 7.6 hours after call time\nTurnaround given: 11.8 hours before next call",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Boom Operator\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Delayed Meal Penalty\",\n      \"clause\": \"BCCFU Article 6.01/6.04\",\n      \"description\": \"First meal was provided at 7.6h after call, exceeding the mandatory 6-hour window.\",\n      \"hours_affected\": 1.6\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Boom Operator",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Delayed Meal Penalty",
+            "clause": "BCCFU Article 6.01/6.04",
+            "description": "First meal was provided at 7.6h after call, exceeding the mandatory 6-hour window.",
+            "hours_affected": 1.6
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.5,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 16.989548921585083
+    },
+    {
+      "sample_idx": 3,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Assistant Costume Designer\n- Rate: $50.15/hr\n- Total Elapsed Work Time: 11.6h\n- First Meal Given: 6.9h after call\n- Rest Period Between Shifts: 8.6h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Assistant Costume Designer\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Turnaround Encroachment\",\n      \"clause\": \"BCCFU Article A1.20(a)\",\n      \"description\": \"Rest period of 8.6h fails to meet mandatory minimum of 10.0h. Encroached by 1.4 hours.\",\n      \"hours_affected\": 1.4\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Assistant Costume Designer",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Turnaround Encroachment",
+            "clause": "BCCFU Article A1.20(a)",
+            "description": "Rest period of 8.6h fails to meet mandatory minimum of 10.0h. Encroached by 1.4 hours.",
+            "hours_affected": 1.4
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.5,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 19.725569009780884
+    }
+  ],
+  "Fine-Tuned Model + RAG": [
+    {
+      "sample_idx": 0,
+      "prompt": "Please audit the following film crew timecard:\nRole: Head Lighting Technician under BCCFU\nScale wage: $51.41/hr\nShift duration: 15.1h\nFirst meal break: 7.0h mark\nRest period: 5.3h",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Head Lighting Technician\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Delayed Meal Penalty\",\n      \"clause\": \"[BCCFU Article 4.03]\",\n      \"description\": \"First meal was provided at 7.0h after call, exceeding the mandatory 6-hour window.\",\n      \"hours_affected\": 1.0\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Head Lighting Technician",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Delayed Meal Penalty",
+            "clause": "[BCCFU Article 4.03]",
+            "description": "First meal was provided at 7.0h after call, exceeding the mandatory 6-hour window.",
+            "hours_affected": 1.0
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.3333333333333333,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 21.507795095443726
+    },
+    {
+      "sample_idx": 1,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Dolly Operator\n- Rate: $45.98/hr\n- Total Elapsed Work Time: 14.8h\n- First Meal Given: 6.4h after call\n- Rest Period Between Shifts: 10.9h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Dolly Operator\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Extended Meal Penalty\",\n      \"clause\": \"BCCFU Article A1.20(a)\",\n      \"description\": \"First meal given at 6.4h after call, exceeding the extended meal penalty of 7.4h.\",\n      \"hours_affected\": 1.4\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Dolly Operator",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Extended Meal Penalty",
+            "clause": "BCCFU Article A1.20(a)",
+            "description": "First meal given at 6.4h after call, exceeding the extended meal penalty of 7.4h.",
+            "hours_affected": 1.4
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 1.0,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 19.623682022094727
+    },
+    {
+      "sample_idx": 2,
+      "prompt": "Can you check if there are any contractual violations for this shift?\nWorker: Boom Operator (IATSE Local 891)\nHourly base: $53.56\nTotal hours logged: 15.4 hours\nMeal break called: 7.6 hours after call time\nTurnaround given: 11.8 hours before next call",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Boom Operator\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Short Job Penalty\",\n      \"clause\": \"BCCFU Page 62\",\n      \"description\": \"First job exceeds half the contract by 15.4 hours. Penalty for exceeding this ratio?\",\n      \"hours_affected\": 15.4\n    },\n    {\n      \"violation_type\": \"Excessive Work Hours\",\n      \"clause\": \"BCCFU Clause 53\",\n      \"description\": \"Worked 15.4 hours, exceeding the allowed 9-hour workday",
+      "is_valid_json": false,
+      "parsed_pred": null,
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.0,
+        "has_clause_citation": false,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 30.605612993240356
+    },
+    {
+      "sample_idx": 3,
+      "prompt": "Production Audit Request:\n- Guild: BCCFU (IATSE Local 891)\n- Role: Assistant Costume Designer\n- Rate: $50.15/hr\n- Total Elapsed Work Time: 11.6h\n- First Meal Given: 6.9h after call\n- Rest Period Between Shifts: 8.6h\nPlease audit this shift.",
+      "raw_response": "```json\n{\n  \"agreement\": \"BCCFU\",\n  \"classification\": \"Assistant Costume Designer\",\n  \"is_compliant\": false,\n  \"violations\": [\n    {\n      \"violation_type\": \"Extended Meal Penalty\",\n      \"clause\": \"BCCFU Article 8.02\",\n      \"description\": \"First meal given at 6.9h after call, exceeding the mandatory extended meal penalty of 6.0h.\",\n      \"hours_affected\": 6.9\n    }\n  ]\n}\n```",
+      "is_valid_json": true,
+      "parsed_pred": {
+        "agreement": "BCCFU",
+        "classification": "Assistant Costume Designer",
+        "is_compliant": false,
+        "violations": [
+          {
+            "violation_type": "Extended Meal Penalty",
+            "clause": "BCCFU Article 8.02",
+            "description": "First meal given at 6.9h after call, exceeding the mandatory extended meal penalty of 6.0h.",
+            "hours_affected": 6.9
+          }
+        ]
+      },
+      "semantic": {
+        "union_detected": true,
+        "compliance_judgment_correct": true,
+        "concept_recall": 0.5,
+        "has_clause_citation": true,
+        "has_arithmetic_hallucination": false
+      },
+      "latency": 21.081899881362915
+    }
+  ]
+}

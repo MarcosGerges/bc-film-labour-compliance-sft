@@ -1,0 +1,47 @@
+{
+  "Base Model (Zero-Shot)": {
+    "strict_json_valid_pct": 0.0,
+    "union_recognition_pct": 25.0,
+    "compliance_detection_pct": 25.0,
+    "violation_concept_recall_pct": 58.3,
+    "clause_citation_pct": 0.0,
+    "arithmetic_hallucination_pct": 0.0,
+    "avg_latency_s": 20.54
+  },
+  "Base Model + RAG": {
+    "strict_json_valid_pct": 0.0,
+    "union_recognition_pct": 25.0,
+    "compliance_detection_pct": 50.0,
+    "violation_concept_recall_pct": 58.3,
+    "clause_citation_pct": 0.0,
+    "arithmetic_hallucination_pct": 25.0,
+    "avg_latency_s": 27.98
+  },
+  "SmolLM2-360M-Instruct": {
+    "strict_json_valid_pct": 0.0,
+    "union_recognition_pct": 25.0,
+    "compliance_detection_pct": 25.0,
+    "violation_concept_recall_pct": 50.0,
+    "clause_citation_pct": 0.0,
+    "arithmetic_hallucination_pct": 0.0,
+    "avg_latency_s": 18.68
+  },
+  "Fine-Tuned Model (LoRA)": {
+    "strict_json_valid_pct": 100.0,
+    "union_recognition_pct": 100.0,
+    "compliance_detection_pct": 100.0,
+    "violation_concept_recall_pct": 33.3,
+    "clause_citation_pct": 100.0,
+    "arithmetic_hallucination_pct": 0.0,
+    "avg_latency_s": 18.07
+  },
+  "Fine-Tuned Model + RAG": {
+    "strict_json_valid_pct": 75.0,
+    "union_recognition_pct": 100.0,
+    "compliance_detection_pct": 100.0,
+    "violation_concept_recall_pct": 45.8,
+    "clause_citation_pct": 75.0,
+    "arithmetic_hallucination_pct": 0.0,
+    "avg_latency_s": 23.2
+  }
+}
