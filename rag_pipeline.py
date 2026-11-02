@@ -39,7 +39,11 @@ def format_prompt_node(state: AuditState) -> Dict[str, Any]:
     if clauses and state.get("use_rag", False):
         context_str = "\n\nRelevant BC Collective Agreement Clauses Grounding:\n"
         for c in clauses:
-            context_str += f"- [{c.get('clause')}]: {c.get('content')}\n"
+            # Keep grounding concise to prevent attention dilution on compact models
+            content_snippet = c.get("content", "").strip()
+            if len(content_snippet) > 280:
+                content_snippet = content_snippet[:280].rsplit(" ", 1)[0] + "..."
+            context_str += f"- [{c.get('clause')}]: {content_snippet}\n"
         augmented_query = f"{query}\n{context_str}\nAudit strictly using these cited collective agreements."
     else:
         augmented_query = query

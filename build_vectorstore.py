@@ -1,6 +1,7 @@
 import os
 import json
 from pathlib import Path
+from typing import Optional, List, Dict, Any
 import config
 from config import VECTOR_DB_DIR, BASE_DIR, EMBEDDING_MODEL_NAME
 from extract_knowledge import extract_pdf_text
@@ -88,19 +89,32 @@ def build_vector_store():
         print(f"Saved fallback knowledge base to {backup_path}")
         return None, None
 
-def query_knowledge_base(query_text: str, n_results: int = 3, distance_threshold: float = 0.65):
+def detect_agreement_from_text(text: str) -> Optional[str]:
+    """Extracts likely collective agreement jurisdiction from query text."""
+    t = text.lower()
+    if any(w in t for w in ["bccfu", "iatse", "teamsters", "local 891", "155"]):
+        return "BCCFU"
+    if any(w in t for w in ["dgc", "directors guild", "location manager"]):
+        return "DGC"
+    if any(w in t for w in ["ubcp", "actra", "performer", "actor", "stunt"]):
+        return "UBCP"
+    if any(w in t for w in ["esa", "employment standards"]):
+        return "Statutory"
+    return None
+
+def query_knowledge_base(query_text: str, n_results: int = 3, distance_threshold: float = 0.65, agreement: Optional[str] = None):
     """
     Retrieve top relevant clauses given a shift description or timecard query.
     
     =============================================================================
-    COSINE DISTANCE GUARDRAIL:
-    ChromaDB collection uses {"hnsw:space": "cosine"}, where:
-        Cosine Distance = 1.0 - Cosine Similarity
-    
-    A strict threshold guardrail (`distance_threshold`, default 0.65) filters out
-    retrieved chunks whose distance exceeds 0.65 (similarity < 0.35).
-    This ensures that irrelevant or out-of-domain queries do NOT pollute the LLM
-    context with ungrounded legal clauses.
+    GUILD METADATA FILTER & COSINE DISTANCE GUARDRAIL:
+    1. Agreement Filter: Restricts ChromaDB retrieval to the detected union/agreement
+       (where={"agreement": target_agreement}), preventing cross-union noise from
+       polluting the context window.
+    2. Cosine Distance Guardrail: ChromaDB collection uses {"hnsw:space": "cosine"}, where:
+           Cosine Distance = 1.0 - Cosine Similarity
+       A strict threshold guardrail (`distance_threshold`, default 0.65) filters out
+       retrieved chunks whose distance exceeds 0.65 (similarity < 0.35).
     =============================================================================
     """
     try:
@@ -111,11 +125,17 @@ def query_knowledge_base(query_text: str, n_results: int = 3, distance_threshold
             name="bc_film_labour_agreements",
             embedding_function=ef
         )
-        results = collection.query(
-            query_texts=[query_text],
-            n_results=n_results,
-            include=["documents", "metadatas", "distances"]
-        )
+        
+        target_agreement = agreement or detect_agreement_from_text(query_text)
+        query_kwargs = {
+            "query_texts": [query_text],
+            "n_results": n_results,
+            "include": ["documents", "metadatas", "distances"]
+        }
+        if target_agreement:
+            query_kwargs["where"] = {"agreement": target_agreement}
+            
+        results = collection.query(**query_kwargs)
         retrieved_docs = []
         if results and "documents" in results and results["documents"]:
             for i, doc_text in enumerate(results["documents"][0]):
@@ -142,7 +162,10 @@ def query_knowledge_base(query_text: str, n_results: int = 3, distance_threshold
         docs = extract_pdf_text()
         scores = []
         q_lower = query_text.lower()
+        target_agreement = agreement or detect_agreement_from_text(query_text)
         for doc in docs:
+            if target_agreement and doc.get("agreement", "").lower() != target_agreement.lower():
+                continue
             score = 0
             if doc.get("agreement", "").lower() in q_lower:
                 score += 5

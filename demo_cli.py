@@ -4,6 +4,9 @@ import json
 import argparse
 from pathlib import Path
 
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import BASE_MODEL_NAME, OUTPUT_DIR, SYSTEM_PROMPT
 from build_vectorstore import query_knowledge_base
